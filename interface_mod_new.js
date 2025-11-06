@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Lampa - Interface Mod New + Full Translation UK/RU/EN
+// @name         Lampa - Interface Mod New + Повна локалізація UK/RU/EN
 // @namespace    https://mastermagic98.github.io/Slick/
-// @version      2.0
-// @description  Повна локалізація інтерфейсу + мод для Lampa
+// @version      2.1
+// @description  Повна локалізація інтерфейсу Lampa + розширений мод (ES5)
 // @author       MasterMagic + Grok
 // @match        https://lampatime.ru/*
 // @match        https://lampa.mx/*
@@ -14,9 +14,8 @@
 (function() {
     'use strict';
 
-    // Додаємо всі переклади одним масивом
+    // ==================== ПОВНИЙ ПЕРЕКЛАД ВСІХ ЕЛЕМЕНТІВ ====================
     Lampa.Lang.add({
-        // === Основні кнопки та меню ===
         maxsm_themes: {
             ru: "Темы",
             en: "Themes",
@@ -57,8 +56,6 @@
             en: "Background blur",
             uk: "Розмиття фону"
         },
-
-        // === Налаштування тем ===
         maxsm_theme_dark: {
             ru: "Тёмная тема",
             en: "Dark theme",
@@ -84,17 +81,15 @@
             en: "Blue",
             uk: "Синя"
         },
-
-        // === Інші елементи ===
         maxsm_reset: {
             ru: "Сброс настроек",
             en: "Reset settings",
             uk: "Скинути налаштування"
         },
         maxsm_saved: {
-            ru: "Настройки сохранены!",
-            en: "Settings saved!",
-            uk: "Налаштування збережено!"
+            ru: "Сохранено!",
+            en: "Saved!",
+            uk: "Збережено!"
         },
         maxsm_author: {
             ru: "Автор мода",
@@ -102,17 +97,15 @@
             uk: "Автор моду"
         },
         maxsm_version: {
-            ru: "Версия",
-            en: "Version",
-            uk: "Версія"
+            ru: "Версия мода",
+            en: "Mod version",
+            uk: "Версія моду"
         },
         maxsm_support: {
             ru: "Поддержать автора",
             en: "Support author",
             uk: "Підтримати автора"
         },
-
-        // === Нові елементи інтерфейсу (додано вручну) ===
         maxsm_menu_main: {
             ru: "Главное меню",
             en: "Main menu",
@@ -197,10 +190,25 @@
             ru: "Озвучка",
             en: "Voice",
             uk: "Озвучка"
+        },
+        maxsm_player_speed: {
+            ru: "Скорость",
+            en: "Speed",
+            uk: "Швидкість"
+        },
+        maxsm_player_next: {
+            ru: "Следующая серия",
+            en: "Next episode",
+            uk: "Наступна серія"
+        },
+        maxsm_player_prev: {
+            ru: "Предыдущая серия",
+            en: "Previous episode",
+            uk: "Попередня серія"
         }
     });
 
-    // === Основний код мода (залишив без змін, лише додав коментарі) ===
+    // ==================== ЗАПУСК МОДУ ====================
     function initMod() {
         if (window.lampa_settings_readys) {
             startMod();
@@ -210,7 +218,7 @@
     }
 
     function startMod() {
-        // Додаємо пункт у меню
+        // Додаємо пункт у головне меню
         Lampa.Menu.add({
             title: Lampa.Lang.translate('maxsm_themes'),
             icon: '',
@@ -218,14 +226,14 @@
                 {
                     title: Lampa.Lang.translate('maxsm_settings'),
                     icon: '',
-                    action: function() {
+                    action: function () {
                         openSettings();
                     }
                 }
             ]
         });
 
-        // Налаштування
+        // ==================== ВІКНО НАЛАШТУВАНЬ ====================
         function openSettings() {
             var html = '<div class="maxsm-settings">';
             html += '<div class="maxsm-title">' + Lampa.Lang.translate('maxsm_settings') + '</div>';
@@ -234,7 +242,7 @@
             html += '<div class="maxsm-item"><label><input type="checkbox" id="hide_scroll"> ' + Lampa.Lang.translate('maxsm_hide_scroll') + '</label></div>';
             html += '<div class="maxsm-item"><label><input type="checkbox" id="transparent_bg"> ' + Lampa.Lang.translate('maxsm_transparent') + '</label></div>';
             html += '<div class="maxsm-item"><label><input type="checkbox" id="blur_bg"> ' + Lampa.Lang.translate('maxsm_blur') + '</label></div>';
-            
+
             // Теми
             html += '<div class="maxsm-title" style="margin-top:20px;">' + Lampa.Lang.translate('maxsm_themes') + '</div>';
             html += '<div class="maxsm-item"><label><input type="radio" name="theme" value="dark" id="theme_dark"> ' + Lampa.Lang.translate('maxsm_theme_dark') + '</label></div>';
@@ -242,7 +250,7 @@
             html += '<div class="maxsm-item"><label><input type="radio" name="theme" value="oled" id="theme_oled"> ' + Lampa.Lang.translate('maxsm_theme_oled') + '</label></div>';
             html += '<div class="maxsm-item"><label><input type="radio" name="theme" value="purple" id="theme_purple"> ' + Lampa.Lang.translate('maxsm_theme_purple') + '</label></div>';
             html += '<div class="maxsm-item"><label><input type="radio" name="theme" value="blue" id="theme_blue"> ' + Lampa.Lang.translate('maxsm_theme_blue') + '</label></div>';
-            
+
             html += '<div class="maxsm-buttons">';
             html += '<button id="maxsm_save">' + Lampa.Lang.translate('maxsm_saved') + '</button>';
             html += '<button id="maxsm_reset">' + Lampa.Lang.translate('maxsm_reset') + '</button>';
@@ -252,7 +260,7 @@
                 title: Lampa.Lang.translate('maxsm_settings'),
                 html: html,
                 size: 'medium',
-                onClose: function() {},
+                onClose: function () {},
                 buttons: []
             });
 
@@ -260,8 +268,9 @@
             bindEvents();
         }
 
+        // ==================== ЗАВАНТАЖЕННЯ НАЛАШТУВАНЬ ====================
         function loadSettings() {
-            var settings = Lampa.Storage.get('maxsm_mod','{}');
+            var settings = Lampa.Storage.get('maxsm_mod', '{}');
             if (typeof settings === 'string') settings = JSON.parse(settings);
 
             if (settings.hide_header) document.getElementById('hide_header').checked = true;
@@ -269,11 +278,15 @@
             if (settings.hide_scroll) document.getElementById('hide_scroll').checked = true;
             if (settings.transparent_bg) document.getElementById('transparent_bg').checked = true;
             if (settings.blur_bg) document.getElementById('blur_bg').checked = true;
-            if (settings.theme) document.getElementById('theme_' + settings.theme).checked = true;
+            if (settings.theme) {
+                var radio = document.getElementById('theme_' + settings.theme);
+                if (radio) radio.checked = true;
+            }
         }
 
+        // ==================== ПОДІЇ КНОПОК ====================
         function bindEvents() {
-            document.getElementById('maxsm_save').addEventListener('click', function() {
+            document.getElementById('maxsm_save').addEventListener('click', function () {
                 var settings = {
                     hide_header: document.getElementById('hide_header').checked,
                     hide_footer: document.getElementById('hide_footer').checked,
@@ -284,50 +297,57 @@
                 };
 
                 Lampa.Storage.set('maxsm_mod', JSON.stringify(settings));
-                Lampa.Controller.toggle('modal');
-                setTimeout(function(){ location.reload(); }, 500);
+                Lampa.Modal.close();
+                setTimeout(function () { location.reload(); }, 600);
             });
 
-            document.getElementById('maxsm_reset').addEventListener('click', function() {
+            document.getElementById('maxsm_reset').addEventListener('click', function () {
                 Lampa.Storage.set('maxsm_mod', '{}');
-                Lampa.Controller.toggle('modal');
-                setTimeout(function(){ location.reload(); }, 500);
+                Lampa.Modal.close();
+                setTimeout(function () { location.reload(); }, 600);
             });
         }
 
-        // Застосування налаштувань при завантаженні
+        // ==================== ЗАСТОСУВАННЯ НАЛАШТУВАНЬ ====================
         function applySettings() {
-            var settings = Lampa.Storage.get('maxsm_mod','{}');
+            var settings = Lampa.Storage.get('maxsm_mod', '{}');
             if (typeof settings === 'string') settings = JSON.parse(settings);
 
-            if (settings.hide_header) document.querySelector('.head').style.display = 'none';
-            if (settings.hide_footer) document.querySelector('.foot').style.display = 'none';
+            var head = document.querySelector('.head');
+            var foot = document.querySelector('.foot');
+
+            if (settings.hide_header && head) head.style.display = 'none';
+            if (settings.hide_footer && foot) foot.style.display = 'none';
             if (settings.hide_scroll) document.body.classList.add('hide-scroll');
             if (settings.transparent_bg) document.body.classList.add('transparent-bg');
             if (settings.blur_bg) document.body.classList.add('blur-bg');
             if (settings.theme) document.body.setAttribute('data-theme', settings.theme);
         }
 
-        // Додаємо CSS
+        // ==================== СТИЛІ ====================
         var style = document.createElement('style');
-        style.innerHTML = `
-            .hide-scroll::-webkit-scrollbar { display: none !important; }
-            .transparent-bg { background: transparent !important; }
-            .blur-bg { backdrop-filter: blur(10px); }
-            [data-theme="oled"] body { background: #000 !important; }
-            [data-theme="purple"] body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; }
-            [data-theme="blue"] body { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important; }
-            .maxsm-settings { padding: 20px; font-size: 1.1em; }
-            .maxsm-title { font-weight: bold; margin: 15px 0 10px; color: #fff; }
-            .maxsm-item { margin: 10px 0; }
-            .maxsm-buttons { margin-top: 30px; text-align: center; }
-            .maxsm-buttons button { padding: 12px 24px; margin: 0 10px; }
-        `;
+        style.type = 'text/css';
+        style.innerHTML = [
+            '.hide-scroll::-webkit-scrollbar { display: none !important; }',
+            '.transparent-bg { background: transparent !important; }',
+            '.blur-bg { backdrop-filter: blur(12px) !important; -webkit-backdrop-filter: blur(12px) !important; }',
+            'body[data-theme="oled"] { background: #000 !important; }',
+            'body[data-theme="purple"] { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; }',
+            'body[data-theme="blue"] { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important; }',
+            'body[data-theme="light"] { background: #f5f5f5 !important; }',
+            '.maxsm-settings { padding: 20px; line-height: 1.6; }',
+            '.maxsm-title { font-weight: bold; font-size: 1.3em; margin: 20px 0 12px; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }',
+            '.maxsm-item { margin: 12px 0; }',
+            '.maxsm-item label { cursor: pointer; }',
+            '.maxsm-buttons { margin-top: 30px; text-align: center; }',
+            '.maxsm-buttons button { padding: 12px 28px; margin: 0 12px; font-size: 1em; border-radius: 8px; }'
+        ].join('\n');
         document.head.appendChild(style);
 
-        // Застосовуємо при старті
-        setTimeout(applySettings, 1000);
+        // Застосовуємо після повного завантаження
+        setTimeout(applySettings, 1200);
     }
 
+    // ==================== СТАРТ ====================
     initMod();
 })();
